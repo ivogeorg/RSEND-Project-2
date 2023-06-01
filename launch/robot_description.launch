@@ -1,7 +1,0 @@
-<launch>
-	
-	<!-- Send URDF to the parameter server -->
-	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find my_robot)/urdf/my_robot.xacro'"/>
-
-</launch>
-
