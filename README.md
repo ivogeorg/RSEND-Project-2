@@ -1,6 +1,7 @@
 # RSEND Project 2: Ball Chaser
-
-<img src="/assets/Project-2-no-rviz-robot-model.png" width="450"/>
+| Moving straight | Turning left |
+| --- | --- |
+| <img src="/assets/Project-2-rviz.png" width="450"/> | <img src="/assets/Project-2-rviz-ball.png" width="450"/>  
 
 *Note: This repository is to be cloned as `src` under `/home/workspace/catkin_ws`, after which in `/home/workspace/catkin_ws/src` the command `catkin_init_workspace` can be run.*
 
