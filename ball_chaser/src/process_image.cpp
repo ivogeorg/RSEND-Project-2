@@ -49,20 +49,20 @@ void process_image_callback(const sensor_msgs::Image img) {
 		if (img.data[i] == white_pixel && 
 			img.data[i + 1] == white_pixel &&
 			img.data[i + 2] == white_pixel) {
-			ball_pixel_index = i;							// ass 2
+			ball_pixel_index = i;				// ass 2
 			break;
 		}
 	}
 
-	float lin_x = 0.0, ang_z = 0.0;  						// no ball, stop is default!
+	float lin_x = 0.0, ang_z = 0.0;  				// no ball, stop is default!
 
-	if (ball_pixel_index >= 0) {							// ass 3
+	if (ball_pixel_index >= 0) {					// ass 3
 
 		float hor = (float) (ball_pixel_index % img.step); 	// ass 1, horizontal position
 
 		if (hor < 0.33 * img.step) {
 			// left
-			lin_x = 0.5;									// lin>0, ang>0 is smoother
+			lin_x = 0.5;					// lin>0, ang>0 is smoother
 			ang_z = 0.5;
 		} else if (hor < 0.66 * img.step) {
 			// mid
