@@ -35,24 +35,34 @@ void process_image_callback(const sensor_msgs::Image img) {
 
 	int ball_pixel_index = -1;
 	// (ivogeorg) NOTE:
-	// (0, 0) is at top-left of image and the pixels are at indices [0, h*w-1], row
-	// after row. "step" means the length of one row so it is equivalent to "width".
-	for (int i = 0; i < img.height * img.step; i ++) {
-		if (img.data[i] == white_pixel) {
-			ball_pixel_index = i;
+	// sensor_msgs::Image is a flat array where every  "pixel" is a triplet of
+	// array indices [r, g, b]. 
+	// (0, 0) is at top-left of image and the pixels are at indices [0, h*w-1], 
+	// row after row.
+	// step = width + row padding, probably for uneven rows 
+
+	// (ivogeorg) Assumptions:
+	// 1. step ~ width 
+	// 2. r index of the pixel for localization [left, center, right]
+	// 3. just one white pixel is enough for correct localization
+	for (int i = 0; i < img.height * img.step; i = i + 3) {		// ass 1
+		if (img.data[i] == white_pixel && 
+			img.data[i + 1] == white_pixel &&
+			img.data[i + 2] == white_pixel) {
+			ball_pixel_index = i;							// ass 2
 			break;
 		}
 	}
 
-	float lin_x = 0.0, ang_z = 0.0;  // default is no ball, so stop!
+	float lin_x = 0.0, ang_z = 0.0;  						// no ball, stop is default!
 
-	if (ball_pixel_index >= 0) {
+	if (ball_pixel_index >= 0) {							// ass 3
 
-		float hor = (float) (ball_pixel_index % img.step); // (ig) horizontal position
+		float hor = (float) (ball_pixel_index % img.step); 	// ass 1, horizontal position
 
 		if (hor < 0.33 * img.step) {
 			// left
-			lin_x = 0.5;
+			lin_x = 0.5;									// lin>0, ang>0 is smoother
 			ang_z = 0.5;
 		} else if (hor < 0.66 * img.step) {
 			// mid
